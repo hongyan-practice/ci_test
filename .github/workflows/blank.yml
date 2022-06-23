@@ -30,7 +30,6 @@ jobs:
         env:
           BRANCH: ${{env.GITHUB_REF_NAME}}
         run: |
-          echo $BRANCH
           if [ "$BRANCH" == "dev" ]; then
               run: echo "::set-output name=TF_ENV::dev"
               elif [ "$BRANCH" == "prod" ]; then
