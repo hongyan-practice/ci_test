@@ -32,13 +32,13 @@ jobs:
       - name: Setup main version
         if: startsWith(github.event.ref, 'refs/tags') != true
         run: |
-          echo "DEST_DIR=$(echo ${GITHUB_REF##*/})/$(echo ${GITHUB_SHA:0:7})/" >> $GITHUB_ENV
+          echo "DIST_VERSION=$(echo ${GITHUB_REF##*/}).$(echo ${GITHUB_SHA:0:7})/" >> $GITHUB_ENV
         shell: bash
 
       - name: Setup main version on tag
         if: startsWith(github.event.ref, 'refs/tags')
         run: |
-          echo "DEST_DIR=$(echo ${GITHUB_REF##*/})/" >> $GITHUB_ENV
+          echo "DIST_VERSION=$(echo ${GITHUB_REF##*/})/" >> $GITHUB_ENV
         shell: bash
 
       # Runs a single command using the runners shell
