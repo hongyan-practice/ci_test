@@ -25,19 +25,17 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      - name: Set Terraform Environment Variable
-        id: set_tf_env
-        env:
-          BRANCH: ${{env.GITHUB_REF_NAME}}
+      - name: Setup main version
+        if: startsWith(github.event.ref, 'refs/tags') != true
         run: |
-          if [ "$BRANCH" == "dev" ]; then
-              run: echo "::set-output name=TF_ENV::dev"
-              elif [ "$BRANCH" == "prod" ]; then
-              run: echo "::set-output name=TF_ENV::prod"
-          else
-              echo "Branch has no environment"
-              exit 1
-          fi
+          echo "DEST_DIR=$(echo ${GITHUB_REF##*/})/$(echo ${GITHUB_SHA:0:7})/" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Setup main version on tag
+        if: startsWith(github.event.ref, 'refs/tags')
+        run: |
+          echo "DEST_DIR=$(echo ${GITHUB_REF##*/})/" >> $GITHUB_ENV
+        shell: bash
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
